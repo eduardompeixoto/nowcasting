@@ -1,11 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-#
-# See https://github.com/r-lib/actions/tree/master/examples#readme for
-# additional example workflows available for the R community.
-
 on:
   schedule:
     - cron: '5 13 * * *'
@@ -14,7 +6,7 @@ on:
 
 jobs:
   render:
-    name: update_diario_esus_notifica
+    name: nowcasting
     runs-on: ubuntu-20.04
 
     env:
@@ -23,9 +15,10 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
-          sudo apt-get install -y libcurl4-openssl-dev
-          Rscript -e 'install.packages(c("remotes", "pkgload", "pak", "writexl","httr", "jsonlite", "dplyr","qdapRegex","xlsx","devtools","telegram.bot"))'
-          Rscript -e 'remotes::install_deps(dependencies = TRUE)'
+          R_LIBS_USER="${{ github.workspace }}/R/library"
+          mkdir -p "${R_LIBS_USER}"
+          Rscript -e 'install.packages(c("remotes", "pkgload", "pak", "writexl","httr", "jsonlite", "dplyr","qdapRegex","xlsx","devtools","telegram.bot"), lib = "${R_LIBS_USER}")'
+          Rscript -e 'remotes::install_deps(dependencies = TRUE, lib = "${R_LIBS_USER}")'
         shell: bash
 
       - name: Checkout code
@@ -42,7 +35,6 @@ jobs:
       - name: Execute Script
         run: |
           Rscript "inst/rodar_esus.R"
-
       - name: Commit and Push
         run: |
           git config --local user.name "$GITHUB_ACTOR"
