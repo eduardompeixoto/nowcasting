@@ -1,7 +1,8 @@
 esus<-function(){
 
 devtools::install_github("https://github.com/covid19br/nowcaster")
-  
+install.packages("sn")
+require(sn)
 require(readr)  
 srag <- read.csv2("http://sistemas.saude.rj.gov.br/tabnetbd/dash/now_casting_sivep.csv",header = F)
 colnames<-c("classi_fin", "dt_digita", "dt_notific", "dt_sin_pri","dt_intern","municipio_res")
