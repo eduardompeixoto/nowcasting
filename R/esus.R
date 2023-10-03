@@ -132,12 +132,12 @@ dengue <-
 
 
 
-  nowcasting1
-  nowcasting2
-  nowcasting3
-  nowcasting4
-  chik
-  dengue
+list(nowcasting1,
+  nowcasting2,
+  nowcasting3,
+  nowcasting4,
+  chik,
+  dengue)
 
 
 
